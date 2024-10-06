@@ -13,7 +13,7 @@ const {
 
 const router = express.Router();
 
-router.get("/", authenticateUserRole("admin"), getCategories);
+router.get("/", getCategories);
 
 router.get("/:id", authenticateUserRole("admin"), getCategoryById);
 

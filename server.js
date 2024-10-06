@@ -6,6 +6,8 @@ const authRoutes = require("./routes/authRoutes");
 const protectedRoutes = require("./routes/protectedRoutes");
 const postRoutes = require("./routes/postRoutes");
 const categoriesRoutes = require("./routes/categoriesRoutes");
+const usersRoutes = require("./routes/usersRoutes");
+const commentsRoutes = require("./routes/commentsRoutes");
 
 require("dotenv").config();
 
@@ -24,7 +26,8 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/categories", categoriesRoutes);
-
+app.use("/api/users", usersRoutes);
+app.use("/api/comments", commentsRoutes);
 app.use("/api/protected", protectedRoutes);
 
 app.listen(PORT, () => {

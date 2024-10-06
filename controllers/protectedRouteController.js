@@ -1,5 +1,9 @@
-const protectedRouteToHome = (req, res) => {
-  res.json("acces to /home granted");
+const protectedRouteToUserHome = (req, res) => {
+  res.json("acces to /userHome granted");
 };
 
-module.exports = { protectedRouteToHome };
+const protectedRouteToAdminHome = (req, res) => {
+  res.json("acces to /adminHome granted");
+};
+
+module.exports = { protectedRouteToUserHome, protectedRouteToAdminHome };

@@ -1,9 +1,7 @@
-// categoryController.js
 const Category = require("../models/Categories");
 
-// Create a new category
 const createCategory = async (req, res) => {
-  const { name } = req.body; // Adjust based on your category structure
+  const { name } = req.body;
   try {
     const newCategory = new Category({ name });
     await newCategory.save();
@@ -14,7 +12,6 @@ const createCategory = async (req, res) => {
   }
 };
 
-// Get all categories
 const getCategories = async (req, res) => {
   try {
     const categories = await Category.find();
@@ -25,7 +22,6 @@ const getCategories = async (req, res) => {
   }
 };
 
-// Get a specific category by ID
 const getCategoryById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -40,10 +36,9 @@ const getCategoryById = async (req, res) => {
   }
 };
 
-// Update an existing category by ID
 const updateCategory = async (req, res) => {
   const { id } = req.params;
-  const { name } = req.body; // Adjust based on your category structure
+  const { name } = req.body;
   try {
     const updatedCategory = await Category.findByIdAndUpdate(
       id,
@@ -60,7 +55,6 @@ const updateCategory = async (req, res) => {
   }
 };
 
-// Delete a category by ID
 const deleteCategory = async (req, res) => {
   const { id } = req.params;
   try {
@@ -68,7 +62,7 @@ const deleteCategory = async (req, res) => {
     if (!deletedCategory) {
       return res.status(404).json({ message: "Category not found" });
     }
-    res.status(204).send(); // No content on successful deletion
+    res.status(204).send();
   } catch (error) {
     console.error("Error deleting category:", error);
     res.status(500).json({ message: "Server error" });

@@ -1,11 +1,10 @@
 const Post = require("../models/Posts");
 
-// Get all posts
 const getAllPosts = async (req, res) => {
   console.log("Fetching all posts...");
   try {
-    const posts = await Post.find(); // Fetch all posts from the database
-    res.status(200).json(posts); // Send the posts as a JSON response
+    const posts = await Post.find();
+    res.status(200).json(posts);
   } catch (error) {
     res
       .status(500)
@@ -13,15 +12,14 @@ const getAllPosts = async (req, res) => {
   }
 };
 
-// Get post by ID
 const getPostById = async (req, res) => {
   console.log(`Fetching post with ID: ${req.params.id}`);
   try {
-    const post = await Post.findById(req.params.id); // Fetch post by ID
+    const post = await Post.findById(req.params.id);
     if (!post) {
-      return res.status(404).json({ message: "Post not found" }); // If no post found, return 404
+      return res.status(404).json({ message: "Post not found" });
     }
-    res.status(200).json(post); // Send the post as a JSON response
+    res.status(200).json(post);
   } catch (error) {
     res
       .status(500)
@@ -29,11 +27,10 @@ const getPostById = async (req, res) => {
   }
 };
 
-// Create a new post
 const createPost = async (req, res) => {
   console.log("Creating a new post...");
   try {
-    const { userId, name, category, description, price, imgHttps } = req.body; // Destructure request body
+    const { userId, name, category, description, price, imgHttps } = req.body;
     const newPost = new Post({
       userId,
       name,
@@ -41,11 +38,11 @@ const createPost = async (req, res) => {
       description,
       price,
       imgHttps,
-      authorId: req.user.id, // Assuming you want to associate the post with the user
+      authorId: req.user.id,
     });
 
-    await newPost.save(); // Save the new post to the database
-    res.status(201).json(newPost); // Send the created post as a JSON response
+    await newPost.save();
+    res.status(201).json(newPost);
   } catch (error) {
     res
       .status(500)
@@ -53,18 +50,15 @@ const createPost = async (req, res) => {
   }
 };
 
-// Update an existing post
 const updatePost = async (req, res) => {
   console.log(`Updating post with ID: ${req.params.id}`);
   try {
-    // Include the 'status' field in the destructuring
     const { name, category, description, price, imgHttps, status } = req.body;
 
-    // Update the post, including the 'status' field
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
-      { name, category, description, price, imgHttps, status }, // Add 'status' here
-      { new: true } // Return the updated post
+      { name, category, description, price, imgHttps, status },
+      { new: true }
     );
 
     if (!updatedPost) {
@@ -79,15 +73,14 @@ const updatePost = async (req, res) => {
   }
 };
 
-// Delete a post
 const deletePost = async (req, res) => {
   console.log(`Deleting post with ID: ${req.params.id}`);
   try {
-    const deletedPost = await Post.findByIdAndDelete(req.params.id); // Delete post by ID
+    const deletedPost = await Post.findByIdAndDelete(req.params.id);
     if (!deletedPost) {
-      return res.status(404).json({ message: "Post not found" }); // If no post found, return 404
+      return res.status(404).json({ message: "Post not found" });
     }
-    res.status(200).json({ message: "Post deleted" }); // Send success message
+    res.status(200).json({ message: "Post deleted" });
   } catch (error) {
     res
       .status(500)
@@ -98,12 +91,11 @@ const deletePost = async (req, res) => {
 const likePost = async (req, res) => {
   try {
     const postId = req.params.id;
-    const userId = req.user.id; // Assuming user ID comes from the authenticated request
+    const userId = req.user.id;
 
     console.log("postid", postId);
     console.log("userId", userId);
 
-    // Find the post by ID
     const post = await Post.findById(postId);
     console.log("Post found:", post);
 
@@ -111,20 +103,16 @@ const likePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // Check if the user has already liked the post
     const userIndex = post.likes.indexOf(userId);
 
     if (userIndex !== -1) {
-      // If user already liked the post, remove their ID (unlike)
       post.likes.splice(userIndex, 1);
       await post.save();
       return res.status(200).json({ message: "Post unliked", post });
     }
 
-    // If user has not liked the post, add their ID (like)
     post.likes.push(userId);
 
-    // Save the updated post
     await post.save();
 
     res.status(200).json({ message: "Post liked", post });

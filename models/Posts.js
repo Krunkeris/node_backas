@@ -1,24 +1,5 @@
 const mongoose = require("mongoose");
 
-const CommentSchema = new mongoose.Schema(
-  {
-    authorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: false,
-    },
-    text: {
-      type: String,
-      required: false,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  { timestamps: true }
-);
-
 const PostSchema = new mongoose.Schema(
   {
     userId: {
@@ -51,7 +32,7 @@ const PostSchema = new mongoose.Schema(
       default: "pending",
     },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    comments: [CommentSchema],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }
 );

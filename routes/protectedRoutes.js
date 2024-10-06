@@ -1,12 +1,28 @@
 const express = require("express");
-const { authenticateJwt } = require("../middleware/protectedRoutes.middleware");
+const {
+  authenticateJwt,
+  authenticateUserRole,
+} = require("../middleware/protectedRoutes.middleware");
 
 const {
-  protectedRouteToHome,
+  protectedRouteToUserHome,
+  protectedRouteToAdminHome,
 } = require("../controllers/protectedRouteController");
 
 const router = express.Router();
 
-router.get("/home", authenticateJwt, protectedRouteToHome);
+router.get(
+  "/userHome",
+  authenticateJwt,
+  authenticateUserRole("user"),
+  protectedRouteToUserHome
+);
+
+router.get(
+  "/adminHome",
+  authenticateJwt,
+  authenticateUserRole("admin"),
+  protectedRouteToAdminHome
+);
 
 module.exports = router;

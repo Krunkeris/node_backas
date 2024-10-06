@@ -3,7 +3,7 @@ const verifyJwt = require("../jsonwebtoken/verifyJwt");
 const authenticateJwt = (req, res, next) => {
   const token = req.cookies.token;
 
-  console.log("Token from cookie:", token); // Debugging log
+  console.log("Token from cookie:", token);
 
   if (!token) {
     return res
@@ -19,8 +19,8 @@ const authenticateJwt = (req, res, next) => {
       .json({ message: "Invalid token. Unauthorized access" });
   }
 
-  req.user = decoded; // Attach decoded token to request object
-  console.log("Decoded user:", req.user); // Debugging log
+  req.user = decoded;
+  console.log("Decoded user:", req.user);
   next();
 };
 
